@@ -5,4 +5,7 @@ if !RbConfig::CONFIG['arch'].include?('openbsd')
   gem 'xapian-ruby', '~> 1.2'
 end
 
+gem 'unicode-emoji', '~> 1.1'
+gem 'unicode-display-width', '~ 1.4'
+
 gemspec

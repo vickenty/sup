@@ -8,6 +8,7 @@ require 'set'
 require 'enumerator'
 require 'benchmark'
 require 'unicode'
+require 'unicode/display_width'
 require 'fileutils'
 
 class Lockfile
@@ -239,7 +240,7 @@ end
 
 class String
   def display_length
-    @display_length ||= Unicode.width(self.fix_encoding!, false)
+    @display_length ||= Unicode::DisplayWidth.of(self.fix_encoding!, 1, {}, { emoji: true })
 
     # if Unicode.width fails and returns -1, fall back to
     # regular String#length, see pull-request: #256.
@@ -252,7 +253,7 @@ class String
 
   def slice_by_display_length len
     each_char.each_with_object "" do |c, buffer|
-      width = Unicode.width(c, false)
+      width = Unicode::DisplayWidth.of(c, 1, {}, { emoji: true })
       width = 1 if width < 0
       len -= width
       return buffer if len < 0
